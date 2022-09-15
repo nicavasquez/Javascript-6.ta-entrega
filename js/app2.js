@@ -5,6 +5,8 @@ class Cliente {
         this.direccion = direccion;
     }
 }
+let x = 100/0
+console.log(x)
 
 let boton = document.querySelector("#Enviar");
 boton.addEventListener("click", agregarCliente);
@@ -27,9 +29,11 @@ function mostrarCliente(cliente){
     //agregar elementos
     let nuevo = document.createElement("div");
     nuevo.innerHTML = `<h2>Gracias ${cliente.nombre}, sus datos fueron registrados y recibira su pedido en ${cliente.direccion}</h2>`;
+    nuevo.className= "saludoCliente"
     formulario.appendChild(nuevo);
 
 }
+
 
 let productos = [
     {
@@ -155,40 +159,50 @@ let productos = [
 
 ];
 
+let carrito = [];
+const divisa = '$';
+const DOMitems = document.querySelector('#items');
+const DOMcarrito = document.querySelector('#carrito');
+const DOMtotal = document.querySelector('#total');
+const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
-const dibujarProductos = () => {
-    let contenedor = document.querySelector("#container");
-    productos.forEach((producto,indice)=>{
-        let card = document.createElement("div");
-        card.classList.add("card", "col-sm-12", "col-lg-3");
-        card.innerHTML=`<img src="${producto.imagen}" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">${producto.nombre}</h5>
-            <p class="card-text">$${producto.precio}</p>
-            <a href="#" class="btn btn-info" onClick="agregarAlcarrito(${indice})">Comprar</a>
-        </div>`;
-        contenedor.appendChild(card);
+function dibujarProductos() {
+    productos.forEach((info) => {
+        // Estructura
+        const miNodo = document.createElement('div');
+        miNodo.classList.add('card');
+        // Body
+        const miNodoCardBody = document.createElement('div');
+        miNodoCardBody.classList.add('card-body');
+        // Titulo
+        const miNodoTitle = document.createElement('h5');
+        miNodoTitle.classList.add('card-title');
+        miNodoTitle.textContent = info.nombre;
+        // Imagen
+        const miNodoImagen = document.createElement('img');
+        miNodoImagen.classList.add('img-car');
+        miNodoImagen.setAttribute('src', info.imagen);
+        // Precio
+        const miNodoPrecio = document.createElement('p');
+        miNodoPrecio.classList.add('card-text');
+        miNodoPrecio.textContent = `${divisa}${info.precio}`;
+        // Boton 
+        const miNodoBoton = document.createElement('button');
+        miNodoBoton.classList.add('btn', 'btn-info');
+        miNodoBoton.textContent = 'Comprar';
+        miNodoBoton.setAttribute('marcador', info.id);
+        miNodoBoton.addEventListener('click', function(){ alert("Este producto se agregara a tu carrito cuando resuelva como hacerlo!"); });
+        // Insertamos
+        miNodoCardBody.appendChild(miNodoImagen);
+        miNodoCardBody.appendChild(miNodoTitle);
+        miNodoCardBody.appendChild(miNodoPrecio);
+        miNodoCardBody.appendChild(miNodoBoton);
+        miNodo.appendChild(miNodoCardBody);
+        DOMitems.appendChild(miNodo);
     });
-};
+}
 
 dibujarProductos();
 
-let carrito = [];
 
-const agregarAlcarrito = () => {
-    alert("Producto agregado al carrito.");
-    const indiceCarrito = carrito.findIndex((elemento)=>{
-        return elemento.id === productos[indice].id ;
-    });
-    if(indiceCarrito === -1){
-        const productoAgregar = productos[indice];
-        productoAgregar.cantidad = 1;
-        carrito.push(productoAgregar);
-        dibujarCarrito();
-    }else{
-        carrito[indiceCarrito].cantidad +=1;
-        dibujarCarrito();
-    };
-};
 
-let total = 0

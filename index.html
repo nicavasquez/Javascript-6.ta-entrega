@@ -24,7 +24,7 @@
             </div>
             <div id="carrito">
                 <!-- el anchor me redireccionara a una pagina que especifique todas las compras -->
-                <a href="#CARRO"><img src="./images/carrito.png" alt="Carrito de compras"></a>
+                <a href="#carro"><img src="./images/carrito.png" alt="Carrito de compras"></a>
             </div>
             <nav>
                 <ul>
@@ -50,13 +50,21 @@
                 <button id="Enviar">Enviar</button>
             </div>
             <h2 class="text-center">DELIVERIES TIENDA</h2>
-            <div class="container">
-                <div id="container" class="row"></div>
-       
-            <div id="CARRO">
-                <p>Aqui irán los elementos agregados al carro</p>
-                 <a name="carro"></a>   
-
+            
+            <div id="container" class="container">
+                
+                    <!-- Elementos generados -->
+                    <div id="items" class="row" ></div>
+                    <!-- Carrito -->
+                    <div>
+                        <h2>Carrito</h2>
+                        <!-- Elementos del carrito -->
+                        <div id="carrito"></div>
+                        <hr>
+                        <!-- Precio total -->
+                        <p >Total: <span id="total"></span>&dollar;</p>
+                        <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
+                    </div>    
             </div>
 
 
