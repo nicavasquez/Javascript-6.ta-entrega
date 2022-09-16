@@ -5,8 +5,6 @@ class Cliente {
         this.direccion = direccion;
     }
 }
-let x = 100/0
-console.log(x)
 
 let boton = document.querySelector("#Enviar");
 boton.addEventListener("click", agregarCliente);
@@ -160,6 +158,7 @@ let productos = [
 ];
 
 let carrito = [];
+let total = 0;
 const divisa = '$';
 const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
@@ -167,42 +166,63 @@ const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 
 function dibujarProductos() {
-    productos.forEach((info) => {
+    productos.forEach((producto, indice) => {
         // Estructura
         const miNodo = document.createElement('div');
         miNodo.classList.add('card');
-        // Body
-        const miNodoCardBody = document.createElement('div');
-        miNodoCardBody.classList.add('card-body');
-        // Titulo
-        const miNodoTitle = document.createElement('h5');
-        miNodoTitle.classList.add('card-title');
-        miNodoTitle.textContent = info.nombre;
-        // Imagen
-        const miNodoImagen = document.createElement('img');
-        miNodoImagen.classList.add('img-car');
-        miNodoImagen.setAttribute('src', info.imagen);
-        // Precio
-        const miNodoPrecio = document.createElement('p');
-        miNodoPrecio.classList.add('card-text');
-        miNodoPrecio.textContent = `${divisa}${info.precio}`;
-        // Boton 
-        const miNodoBoton = document.createElement('button');
-        miNodoBoton.classList.add('btn', 'btn-info');
-        miNodoBoton.textContent = 'Comprar';
-        miNodoBoton.setAttribute('marcador', info.id);
-        miNodoBoton.addEventListener('click', function(){ alert("Este producto se agregara a tu carrito cuando resuelva como hacerlo!"); });
-        // Insertamos
-        miNodoCardBody.appendChild(miNodoImagen);
-        miNodoCardBody.appendChild(miNodoTitle);
-        miNodoCardBody.appendChild(miNodoPrecio);
-        miNodoCardBody.appendChild(miNodoBoton);
-        miNodo.appendChild(miNodoCardBody);
+        miNodo.innerHTML = 
+        `<div class='card-body'>
+        <img class='car-img' src='${producto.imagen}'></img>
+        <h5 class='card-title'> ${producto.nombre} </h5>
+        <p class='card-text'> ${divisa}${producto.precio} </p>
+        <button class='btn btn-info' onclick="agregarAlCarrito(${indice})"> Comprar </button>
+        `
         DOMitems.appendChild(miNodo);
     });
-}
-
+};
 dibujarProductos();
 
-
-
+const agregarAlCarrito = (indice) => {
+    const codigoProd = carrito.findIndex((producto)=>{
+        return carrito.id === productos[indice].id;
+    });
+    if(codigoProd < 0){
+        const productoAgregar = productos[indice];
+        productoAgregar.cantidad = 1;
+        carrito.push(productoAgregar); 
+        mostrarCarrito();
+    }else{
+        carrito[codigoProd].cantidad =+ 1;
+        mostrarCarrito();
+    }
+}
+let valor = 0;
+const mostrarCarrito = () => {
+    DOMcarrito.className = "carro" ;
+    DOMcarrito.innerHTML = "" ;
+    if (carrito.length > 0) {
+        carrito.forEach((producto,indice)=>{
+            valor = producto.precio * producto.cantidad
+            const carritoFinal = document.createElement("div");
+            carritoFinal.classList.add("card-body")
+            carritoFinal.innerHTML=`
+            <div class="product-details">${producto.nombre}</div>
+            <img class="car-img" src="${producto.imagen}"></img>
+            <div class ="product-details" >Cantidad:${producto.cantidad}</div>
+            <div class ="product-details" >Precio: $ ${producto.precio}</div>
+            <div class ="product-details" > Subtotal: $ ${producto.precio * producto.cantidad}</div>
+            <button type="button" class ="btn btn-danger"  id="eliminar" onclick="borrarProd(${indice})">Eliminar Producto</button>`;
+            DOMcarrito.appendChild(carritoFinal);
+            }
+            
+        );
+        
+        total = total + valor
+        //console.log(total)
+    }
+   
+    DOMtotal.classList.add("total-carrito-fin");
+    DOMtotal.innerHTML=`
+    <div class ="product-details" > Total: $ ${total}</div>
+    ` 
+}
