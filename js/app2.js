@@ -211,18 +211,45 @@ const mostrarCarrito = () => {
             <div class ="product-details" >Cantidad:${producto.cantidad}</div>
             <div class ="product-details" >Precio: $ ${producto.precio}</div>
             <div class ="product-details" > Subtotal: $ ${producto.precio * producto.cantidad}</div>
-            <button type="button" class ="btn btn-danger"  id="eliminar" onclick="borrarProd(${indice})">Eliminar Producto</button>`;
+            <button type="button" class ="btn btn-danger"  id="eliminar" onclick="eliminar(${indice})">Eliminar Producto</button>`;
             DOMcarrito.appendChild(carritoFinal);
+            total = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0 );
+            
+        
             }
             
         );
         
-        total = total + valor
-        //console.log(total)
+        
     }
-   
     DOMtotal.classList.add("total-carrito-fin");
     DOMtotal.innerHTML=`
     <div class ="product-details" > Total: $ ${total}</div>
     ` 
+
+   
+    
 }
+
+const eliminar = (indice) => {
+    carrito.splice(indice, 1);
+    mostrarCarrito();
+    total = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0 );
+    DOMtotal.classList.add("total-carrito-fin");
+    DOMtotal.innerHTML=`
+    <div class ="product-details" > Total: $ ${total}</div>
+    `     
+}
+
+DOMbotonVaciar.addEventListener("click", vaciar)
+function vaciar() {
+    carrito = [];
+    total = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0 );
+    DOMtotal.classList.add("total-carrito-fin");
+    DOMtotal.innerHTML=`
+    <div class ="product-details" > Total: $ ${total}</div>
+    ` 
+    mostrarCarrito();
+
+}
+
