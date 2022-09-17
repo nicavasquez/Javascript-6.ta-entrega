@@ -26,9 +26,19 @@ function mostrarCliente(cliente){
     formulario.innerHTML ="";
     //agregar elementos
     let nuevo = document.createElement("div");
-    nuevo.innerHTML = `<h2>Gracias ${cliente.nombre}, sus datos fueron registrados y recibira su pedido en ${cliente.direccion}</h2>`;
+    nuevo.innerHTML = `
+    <h2>Muchas Gracias ${cliente.nombre}!!</h2>
+    <p>Sus datos fueron registrados y su compra fue exitosa.</p>
+    <hr>
+    <p>Su pedido ya ha sido confirmado por el restaurant y esta siendo procesado.</p>
+    <p>Recibira su pedido en ${cliente.direccion}</p>
+    <h3>Monto final abonado ${total}.</h3>
+    <h2>Disfruta tu pedido !!</h2>
+    `;
     nuevo.className= "saludoCliente"
     formulario.appendChild(nuevo);
+    let form = document.querySelector("#container");
+    form.innerHTML ="";
 
 }
 
@@ -164,6 +174,8 @@ const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+const DOMbotonConfirmar = document.querySelector('#boton-confirmar');
+
 
 function dibujarProductos() {
     productos.forEach((producto, indice) => {
@@ -253,3 +265,6 @@ function vaciar() {
 
 }
 
+
+
+DOMbotonConfirmar.addEventListener("click", agregarCliente);

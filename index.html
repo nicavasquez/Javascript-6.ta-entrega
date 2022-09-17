@@ -39,16 +39,7 @@
         </header>
     
         <main>
-            <div id="contacto">
-                <h2>Ingrese sus datos: </h2>
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre">
-                <label for="numero">Teléfono</label>
-                <input type="text" id="numero">
-                <label for="direccion">Dirección</label>
-                <input type="text" id="direccion">
-                <button id="Enviar">Enviar</button>
-            </div>
+            
             <h2 class="text-center">DELIVERIES TIENDA</h2>
             
             <div id="container" class="container">
@@ -63,8 +54,21 @@
                         <hr>
                         <!-- Precio total -->
                         <p id="total">Total: </p>
-                        <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
-                        <button id="boton-confirmar" class="btn btn-danger">Confirmar Compra</button>
+                        <div id="contacto">
+                            <h2>Ingrese sus datos antes de confirmar el pedido: </h2>
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre">
+                            <label for="numero">Teléfono</label>
+                            <input type="text" id="numero">
+                            <label for="direccion">Dirección</label>
+                            <input type="text" id="direccion">
+                            <button id="Enviar" class="btn btn-danger">Confirmar Compra</button>
+                        </div>
+                        <div class="botones">
+                            <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
+                            <button id="boton-confirmar" class="btn btn-danger">Confirmar Compra</button>
+                        </div>
+                        
                     </div>    
             </div>
 

@@ -146,13 +146,19 @@ main #contacto #nombre, main #contacto #numero, main #contacto #direccion {
   font-weight: bold;
   display: flex;
   justify-content: space-evenly;
-  margin: 1rem;
+  margin: 0.2rem;
 }
 
 .total-carrito-fin {
   display: flex;
   justify-content: center;
   background-color: aqua;
+}
+
+.botones {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 2rem;
 }
 
 /*# sourceMappingURL=style.css.map */
