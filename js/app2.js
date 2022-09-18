@@ -199,7 +199,7 @@ const agregarAlCarrito = (indice) => {
     const codigoProd = carrito.findIndex((elemento)=>{
         return elemento.id === productos[indice].id;
     });
-    if(codigoProd == -1){
+    if(codigoProd === -1){
         const productoAgregar = productos[indice];
         productoAgregar.cantidad = 1;
         carrito.push(productoAgregar); 
