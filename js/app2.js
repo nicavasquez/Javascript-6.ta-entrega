@@ -34,7 +34,7 @@ function mostrarCliente(cliente){
     <hr>
     <p>Su pedido ya ha sido confirmado por el restaurant y esta siendo procesado.</p>
     <p>Recibira su pedido en ${cliente.direccion}</p>
-    <h3>Monto final abonado ${total}.</h3>
+    <h3>Monto final abonado $${total}.</h3>
     <h2>Disfruta tu pedido !!</h2>
     `;
     nuevo.className= "saludoCliente"
@@ -199,14 +199,14 @@ const agregarAlCarrito = (indice) => {
     const codigoProd = carrito.findIndex((elemento)=>{
         return elemento.id === productos[indice].id;
     });
-    if(codigoProd === -1){
+    if(codigoProd == -1){
         const productoAgregar = productos[indice];
         productoAgregar.cantidad = 1;
         carrito.push(productoAgregar); 
         mostrarCarrito();
     }
     else{
-        carrito[codigoProd].cantidad =+ 1;
+        carrito[codigoProd].cantidad = carrito[codigoProd].cantidad + 1;
         mostrarCarrito();
     };
 }
