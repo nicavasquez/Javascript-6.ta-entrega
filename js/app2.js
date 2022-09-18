@@ -22,6 +22,8 @@ function agregarCliente(){
 
 // eliminar elementos
 function mostrarCliente(cliente){
+    let form = document.querySelector("#items");
+    form.innerHTML ="";
     let formulario = document.querySelector("#contacto");
     formulario.innerHTML ="";
     //agregar elementos
@@ -37,8 +39,7 @@ function mostrarCliente(cliente){
     `;
     nuevo.className= "saludoCliente"
     formulario.appendChild(nuevo);
-    let form = document.querySelector("#container");
-    form.innerHTML ="";
+    
 
 }
 
@@ -195,18 +196,19 @@ function dibujarProductos() {
 dibujarProductos();
 
 const agregarAlCarrito = (indice) => {
-    const codigoProd = carrito.findIndex((producto)=>{
-        return carrito.id === productos[indice].id;
+    const codigoProd = carrito.findIndex((elemento)=>{
+        return elemento.id === productos[indice].id;
     });
-    if(codigoProd < 0){
+    if(codigoProd === -1){
         const productoAgregar = productos[indice];
         productoAgregar.cantidad = 1;
         carrito.push(productoAgregar); 
         mostrarCarrito();
-    }else{
+    }
+    else{
         carrito[codigoProd].cantidad =+ 1;
         mostrarCarrito();
-    }
+    };
 }
 let valor = 0;
 const mostrarCarrito = () => {
@@ -214,7 +216,6 @@ const mostrarCarrito = () => {
     DOMcarrito.innerHTML = "" ;
     if (carrito.length > 0) {
         carrito.forEach((producto,indice)=>{
-            valor = producto.precio * producto.cantidad
             const carritoFinal = document.createElement("div");
             carritoFinal.classList.add("card-body")
             carritoFinal.innerHTML=`
