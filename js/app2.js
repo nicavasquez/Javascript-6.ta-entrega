@@ -176,6 +176,7 @@ const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 const DOMbotonConfirmar = document.querySelector('#boton-confirmar');
+const miLocalStorage = window.localStorage;
 
 
 function dibujarProductos() {
@@ -204,10 +205,12 @@ const agregarAlCarrito = (indice) => {
         productoAgregar.cantidad = 1;
         carrito.push(productoAgregar); 
         mostrarCarrito();
+        guardarLocalStorage();
     }
     else{
         carrito[codigoProd].cantidad = carrito[codigoProd].cantidad + 1;
         mostrarCarrito();
+        guardarLocalStorage();
     };
 }
 let valor = 0;
@@ -247,6 +250,7 @@ const mostrarCarrito = () => {
 const eliminar = (indice) => {
     carrito.splice(indice, 1);
     mostrarCarrito();
+    guardarLocalStorage();
     total = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0 );
     DOMtotal.classList.add("total-carrito-fin");
     DOMtotal.innerHTML=`
@@ -263,9 +267,24 @@ function vaciar() {
     <div class ="product-details" > Total: $ ${total}</div>
     ` 
     mostrarCarrito();
+    localStorage.clear();
 
 }
 
 
 
 DOMbotonConfirmar.addEventListener("click", agregarCliente);
+
+
+function guardarLocalStorage(){
+    miLocalStorage.setItem("carrito", JSON.stringify(carrito));
+
+}
+
+function cargarCarritoDeLocalStorage(){
+    if (miLocalStorage.getItem("carrito") !== null) {
+        carrito = JSON.parse(miLocalStorage.getItem("carrito"));        
+    }
+}
+
+cargarCarritoDeLocalStorage();
