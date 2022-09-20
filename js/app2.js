@@ -283,7 +283,8 @@ function guardarLocalStorage(){
 
 function cargarCarritoDeLocalStorage(){
     if (miLocalStorage.getItem("carrito") !== null) {
-        carrito = JSON.parse(miLocalStorage.getItem("carrito"));        
+        carrito = JSON.parse(miLocalStorage.getItem("carrito"));  
+        //mostrarCarrito();      
     }
 }
 
