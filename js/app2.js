@@ -196,23 +196,42 @@ function dibujarProductos() {
 };
 dibujarProductos();
 
+//MODIFICO ESTA FUNCION CON USO DE TERNARIO
+// const agregarAlCarrito = (indice) => {
+//     const codigoProd = carrito.findIndex((elemento)=>{
+//         return elemento.id === productos[indice].id;
+//     });
+//     if(codigoProd === -1){
+//         const productoAgregar = productos[indice];
+//         productoAgregar.cantidad = 1;
+//         carrito.push(productoAgregar); 
+//         mostrarCarrito();
+//         guardarLocalStorage();
+//     }
+//     else{
+//         carrito[codigoProd].cantidad = carrito[codigoProd].cantidad + 1;
+//         mostrarCarrito();
+//         guardarLocalStorage();
+//     };
+// }
+
 const agregarAlCarrito = (indice) => {
     const codigoProd = carrito.findIndex((elemento)=>{
         return elemento.id === productos[indice].id;
     });
-    if(codigoProd === -1){
-        const productoAgregar = productos[indice];
-        productoAgregar.cantidad = 1;
-        carrito.push(productoAgregar); 
-        mostrarCarrito();
-        guardarLocalStorage();
-    }
-    else{
-        carrito[codigoProd].cantidad = carrito[codigoProd].cantidad + 1;
-        mostrarCarrito();
-        guardarLocalStorage();
-    };
-}
+    const productoAgregar = productos[indice];
+    codigoProd === -1 ? (        
+        productoAgregar.cantidad = 1,
+        carrito.push(productoAgregar), 
+        mostrarCarrito(),
+        guardarLocalStorage()
+    ) : (
+        carrito[codigoProd].cantidad = carrito[codigoProd].cantidad + 1,
+        mostrarCarrito(),
+        guardarLocalStorage()
+    )
+};
+
 let valor = 0;
 const mostrarCarrito = () => {
     DOMcarrito.className = "carro" ;
@@ -281,11 +300,23 @@ function guardarLocalStorage(){
 
 }
 
+// function cargarCarritoDeLocalStorage(){
+//     if (miLocalStorage.getItem("carrito") !== null) {
+//         carrito = JSON.parse(miLocalStorage.getItem("carrito"));  
+//         mostrarCarrito();      
+//     }
+// }
+
+
 function cargarCarritoDeLocalStorage(){
-    if (miLocalStorage.getItem("carrito") !== null) {
-        carrito = JSON.parse(miLocalStorage.getItem("carrito"));  
-        //mostrarCarrito();      
-    }
+    miLocalStorage.getItem("carrito") !== null ? (
+        carrito = JSON.parse(miLocalStorage.getItem("carrito")), 
+        mostrarCarrito()
+    ) : (
+        alert ("El carrito del Local Storage esta vacío.")       
+
+    )
 }
 
 cargarCarritoDeLocalStorage();
+
