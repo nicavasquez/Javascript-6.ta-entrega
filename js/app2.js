@@ -18,38 +18,51 @@ function agregarCliente(){
     let cliente1 = new Cliente(nombre, numero, direccion);
     console.log(cliente1);
     mostrarCliente(cliente1);
-    Swal.fire({
-        title: 'CONFIRMADO',
-        html: `Muchas gracias ${nombre}!! <br>
-        Recibiras tu pedido en ${direccion}. <br>
-        Monto final: $${total} <br>
-        Disfruta tu pedido!! <br>
-        Hasta la proxima !! <br>
-        `,
-        icon: 'Success',
-        confirmButtonText: 'Listo!'
-    });
+    
 }
 
 // mostrar datos del cliente y compra realizada al confirmar la compra
 function mostrarCliente(cliente){
+        Swal.fire({
+            title: 'Confirmado',
+            html: `Muchas gracias ${cliente.nombre}!! <br>
+            Recibiras tu pedido en ${cliente.direccion}. <br>
+            Monto final: $${total} <br>
+            `,
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Confirmar",
+          })
+
+    if (cliente.nombre === "" & cliente.direccion ==="") {
+        Swal.fire({
+            title: 'Nombre y Direccion',
+            text: 'Agrega tu nombre y direccion para recibir su compra',
+            icon: 'warning',
+            confirmButtonText: 'Agregar!'
+        });
+              
+        
+    } else {
     let form = document.querySelector("#items");
     form.innerHTML ="";
     let formulario = document.querySelector("#contacto");
-    formulario.innerHTML ="";
-    //agregar elementos
+    formulario.innerHTML=""    
     let nuevo = document.createElement("div");
     nuevo.innerHTML = `
     <h2>Muchas Gracias ${cliente.nombre}!!</h2>
-    <p>Sus datos fueron registrados y su compra fue exitosa.</p>
     <hr>
-    <p>Su pedido ya ha sido confirmado por el restaurant y esta siendo procesado.</p>
-    <p>Recibira su pedido en ${cliente.direccion}</p>
+    <h2>Recibira su pedido en ${cliente.direccion}</h2>
     <h3>Monto final abonado $${total}.</h3>
     <h2>Disfruta tu pedido !!</h2>
     `;
     nuevo.className= "saludoCliente"
     formulario.appendChild(nuevo);
+        
+    }
+    
+    
     
 
 }
@@ -271,48 +284,65 @@ const mostrarCarrito = () => {
 }
 
 // funcion para eliminar un producto del carro
-const eliminar = (indice) => {
-    carrito.splice(indice, 1);
-    Swal.fire({
-        title: 'Eliminado',
-        text: 'Producto eliminado de su compra',
-        icon: 'success',
-        confirmButtonText: 'Listo!'
-    });
-    mostrarCarrito();
-    guardarLocalStorage();
-    total = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0 );
-    DOMtotal.classList.add("total-carrito-fin");
-    DOMtotal.innerHTML=`
-    <div class ="product-details" > Total: $ ${total}</div>
-    `     
-}
+const eliminar = (idProd) => {
+  const item = carrito.find((prod) => prod.id === idProd);
+  const indice = carrito.indexOf(item);
+  Swal.fire({
+    title: "Deseas eliminar este producto del carro?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Borrar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+        Swal.fire({
+            title: 'Eliminado!',
+            icon: 'success',
+            text: 'El producto ha sido eliminado del carro.'
+        })
+      carrito.splice(indice, 1);
+      mostrarCarrito();
+      guardarLocalStorage();
+      
+    }
+  });
+};
+
 
 // funcion para vaciar el carro
 DOMbotonVaciar.addEventListener("click", vaciar)
 function vaciar() {
-    carrito = [];
-    total = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0 );
-    DOMtotal.classList.add("total-carrito-fin");
-    DOMtotal.innerHTML=`
-    <div class ="product-details" > Total: $ ${total}</div>
-    ` 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
+    
+    Swal.fire({
+        title: "Deseas vaciar el carro?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Vaciar",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Vaciado!',
+                icon: 'success',
+                text: 'Todos los productos han sido eliminados del carro.'
+            })
+          carrito = [];
+          mostrarCarrito();
+          guardarLocalStorage();
+          total = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0 );
+        DOMtotal.classList.add("total-carrito-fin");
+        DOMtotal.innerHTML=`
+        <div class ="product-details" > Total: $ ${total}</div>
+        ` 
+        
         }
-      })
+      });
       
-      Toast.fire({
-        icon: 'success',
-        title: 'Sean eliminados todos los productos del carro.'
-      })
+      
 
     mostrarCarrito();
     localStorage.clear();
