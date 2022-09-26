@@ -9,7 +9,7 @@ class Cliente {
 let boton = document.querySelector("#Enviar");
 boton.addEventListener("click", agregarCliente);
 
-// agregado datos de cliente
+// agregado datos de cliente - mostrar datos del cliente y compra realizada al confirmar la compra
 
 function agregarCliente(){
     let nombre = document.querySelector("#nombre").value;
@@ -18,9 +18,20 @@ function agregarCliente(){
     let cliente1 = new Cliente(nombre, numero, direccion);
     console.log(cliente1);
     mostrarCliente(cliente1);
+    Swal.fire({
+        title: 'CONFIRMADO',
+        html: `Muchas gracias ${nombre}!! <br>
+        Recibiras tu pedido en ${direccion}. <br>
+        Monto final: $${total} <br>
+        Disfruta tu pedido!! <br>
+        Hasta la proxima !! <br>
+        `,
+        icon: 'Success',
+        confirmButtonText: 'Listo!'
+    });
 }
 
-// eliminar elementos
+// mostrar datos del cliente y compra realizada al confirmar la compra
 function mostrarCliente(cliente){
     let form = document.querySelector("#items");
     form.innerHTML ="";
@@ -43,7 +54,7 @@ function mostrarCliente(cliente){
 
 }
 
-
+// defino los productos de la tienda
 let productos = [
     {
         id: 1,
@@ -168,6 +179,8 @@ let productos = [
 
 ];
 
+
+// nombro las variables 
 let carrito = [];
 let total = 0;
 const divisa = '$';
@@ -178,7 +191,7 @@ const DOMbotonVaciar = document.querySelector('#boton-vaciar');
 const DOMbotonConfirmar = document.querySelector('#boton-confirmar');
 const miLocalStorage = window.localStorage;
 
-
+// genero las card por cada producto
 function dibujarProductos() {
     productos.forEach((producto, indice) => {
         // Estructura
@@ -196,28 +209,17 @@ function dibujarProductos() {
 };
 dibujarProductos();
 
-//MODIFICO ESTA FUNCION CON USO DE TERNARIO
-// const agregarAlCarrito = (indice) => {
-//     const codigoProd = carrito.findIndex((elemento)=>{
-//         return elemento.id === productos[indice].id;
-//     });
-//     if(codigoProd === -1){
-//         const productoAgregar = productos[indice];
-//         productoAgregar.cantidad = 1;
-//         carrito.push(productoAgregar); 
-//         mostrarCarrito();
-//         guardarLocalStorage();
-//     }
-//     else{
-//         carrito[codigoProd].cantidad = carrito[codigoProd].cantidad + 1;
-//         mostrarCarrito();
-//         guardarLocalStorage();
-//     };
-// }
-
+// funcion para agregar al carro - ve si existe o si es un producto nuevo
+// guarda la indo del carro en localstorage
 const agregarAlCarrito = (indice) => {
     const codigoProd = carrito.findIndex((elemento)=>{
         return elemento.id === productos[indice].id;
+    });
+    Swal.fire({
+        title: 'Agregado',
+        text: 'Producto agregado a su compra',
+        icon: 'success',
+        confirmButtonText: 'Listo!'
     });
     const productoAgregar = productos[indice];
     codigoProd === -1 ? (        
@@ -233,6 +235,8 @@ const agregarAlCarrito = (indice) => {
 };
 
 let valor = 0;
+
+// me muestra todos los productos agregados al carro y calcula el total de la compra 
 const mostrarCarrito = () => {
     DOMcarrito.className = "carro" ;
     DOMcarrito.innerHTML = "" ;
@@ -266,8 +270,15 @@ const mostrarCarrito = () => {
     
 }
 
+// funcion para eliminar un producto del carro
 const eliminar = (indice) => {
     carrito.splice(indice, 1);
+    Swal.fire({
+        title: 'Eliminado',
+        text: 'Producto eliminado de su compra',
+        icon: 'success',
+        confirmButtonText: 'Listo!'
+    });
     mostrarCarrito();
     guardarLocalStorage();
     total = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0 );
@@ -277,6 +288,7 @@ const eliminar = (indice) => {
     `     
 }
 
+// funcion para vaciar el carro
 DOMbotonVaciar.addEventListener("click", vaciar)
 function vaciar() {
     carrito = [];
@@ -285,29 +297,39 @@ function vaciar() {
     DOMtotal.innerHTML=`
     <div class ="product-details" > Total: $ ${total}</div>
     ` 
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'success',
+        title: 'Sean eliminados todos los productos del carro.'
+      })
+
     mostrarCarrito();
     localStorage.clear();
 
 }
 
 
-
+// boton de confirmar compra, usa funcion de agregar cliente
 DOMbotonConfirmar.addEventListener("click", agregarCliente);
 
-
+// funcion de guardar los productos del carro en el localstorage
 function guardarLocalStorage(){
     miLocalStorage.setItem("carrito", JSON.stringify(carrito));
 
 }
 
-// function cargarCarritoDeLocalStorage(){
-//     if (miLocalStorage.getItem("carrito") !== null) {
-//         carrito = JSON.parse(miLocalStorage.getItem("carrito"));  
-//         mostrarCarrito();      
-//     }
-// }
-
-
+// funcion para que el carro tenga la info guardada en localstorage
 function cargarCarritoDeLocalStorage(){
     miLocalStorage.getItem("carrito") !== null ? (
         carrito = JSON.parse(miLocalStorage.getItem("carrito")), 
