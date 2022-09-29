@@ -225,9 +225,20 @@ dibujarProductos();
 // funcion para agregar al carro - ve si existe o si es un producto nuevo
 // guarda la indo del carro en localstorage
 const agregarAlCarrito = (indice) => {
+    Toastify({
+        text: "Producto agregado a su compra",
+        gravity: "bottom",
+        position: "left",
+        duration: "3000",        
+        style: {            
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+        }
+      }).showToast();
+      
     const codigoProd = carrito.findIndex((elemento)=>{
         return elemento.id === productos[indice].id;
     });
+    
     Swal.fire({
         title: 'Agregado',
         text: 'Producto agregado a su compra',
@@ -371,4 +382,8 @@ function cargarCarritoDeLocalStorage(){
 }
 
 cargarCarritoDeLocalStorage();
+
+setTimeout(()=>{
+    alert(`Esto es lo que llevas gastado $${total}`)
+}, 10000)
 
